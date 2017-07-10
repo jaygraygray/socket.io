@@ -1,8 +1,22 @@
-const app = require('express')(),
-      port = 9999;
+var app = require('express')();
+var http = require('http').Server(app);
+var io = require('socket.io')(http);
 
 app.get('/', (req, res) => {
- res.sendFile(__dirname + '/index.html')
-})
+  res.sendFile(__dirname + '/index.html');
+});
 
-app.listen(port, console.log("we in, on ", port))
+io.on('connection', (socket) => {
+  console.log('a user connected');
+  socket.on('disconnect', () => {
+   console.log("a user has disconnected")
+  })
+
+  socket.on('chat message', (msg) => {
+   console.log('Most recent message: ', msg)
+  })
+});
+
+http.listen(3006, function(){
+  console.log('listening on *:3000');
+});
