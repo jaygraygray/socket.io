@@ -15,6 +15,10 @@ io.on('connection', (socket) => {
   socket.on('chat message', (msg) => {
    console.log('Most recent message: ', msg)
   })
+
+  socket.on('chat message', function(msg){
+    io.emit('chat message', msg);
+  });
 });
 
 http.listen(3006, function(){
